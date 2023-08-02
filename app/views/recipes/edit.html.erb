@@ -1,0 +1,11 @@
+<!-- app/views/recipes/edit.html.erb -->
+<h1>Edit Recipe</h1>
+
+<%= form_with(model: @recipe, url: recipe_path(@recipe), method: :patch) do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+
+  <!-- Add more fields for other attributes of the recipe -->
+
+  <%= form.submit "Update Recipe" %>
+<% end %>

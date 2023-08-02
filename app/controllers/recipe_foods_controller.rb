@@ -1,29 +1,23 @@
 class RecipeFoodsController < ApplicationController
-  def index
-    # Your logic to fetch and display all users
-  end
-
-  def show
-    # Your logic to fetch and display a single user
-  end
+  def index; end
 
   def new
-    # Your logic to set up a new user form
+    @recipe_food = RecipeFood.new
   end
 
   def create
-    # Your logic to create a new user based on submitted form data
+    @recipe_food = RecipeFood.new(recipe_food_params)
+
+    if @recipe_food.save
+      redirect_to recipe_foods_path, notice: 'Recipe Food was successfully created.'
+    else
+      render :new
+    end
   end
 
-  def edit
-    # Your logic to set up an edit form for an existing user
-  end
+  private
 
-  def update
-    # Your logic to update an existing user based on submitted form data
-  end
-
-  def destroy
-    # Your logic to delete a user
+  def recipe_food_params
+    params.require(:recipe_food).permit(:quantity, :food_id, :recipe_id)
   end
 end
