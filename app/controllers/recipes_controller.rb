@@ -1,29 +1,91 @@
 class RecipesController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_recipe, only: %i[show edit update destroy]
+  before_action :authorize_user, only: %i[edit update destroy]
+
   def index
-    # Your logic to fetch and display all users
+    @recipes = Recipe.all
   end
 
-  def show
-    # Your logic to fetch and display a single user
+  def public_recipes
+    @recipes = Recipe.where(public: true)
   end
 
   def new
-    # Your logic to set up a new user form
+    @recipe = Recipe.new
   end
 
   def create
-    # Your logic to create a new user based on submitted form data
+    @recipe = Recipe.new(recipe_params)
+    @recipe.user_id = current_user.id
+
+    if @recipe.save
+      flash[:notice] = 'Recipe was successfully created.'
+      redirect_to recipes_path
+    else
+      render :new
+    end
+  end
+
+  def show
+    @recipe = Recipe.find(params[:id])
+    @foods = if current_user.id == @recipe.user.id
+               RecipeFood.where(recipe_id: @recipe.id).includes(:recipe, :food)
+             else
+               RecipeFood.where(recipe_id: @recipe.id).includes(:food)
+             end
   end
 
   def edit
-    # Your logic to set up an edit form for an existing user
-  end
-
-  def update
-    # Your logic to update an existing user based on submitted form data
   end
 
   def destroy
-    # Your logic to delete a user
+    @recipe = Recipe.find(params[:id])
+    @recipe.destroy
+    flash[:notice] = 'Recipe was successfully deleted.'
+    redirect_to recipes_path
+  end
+
+  private
+
+  def build_missing_food_list
+    @general_food_list.map do |general_food|
+      used_food = @food_used_in_recipes.find { |food| food.name == general_food.name }
+      difference_quantity = calculate_difference_quantity(general_food, used_food)
+
+      FoodSummary.new(general_food.name, difference_quantity,
+                      calculate_total_price(general_food, difference_quantity))
+    end
+  end
+
+  def calculate_difference_quantity(general_food, used_food)
+    if used_food
+      difference = used_food.total_quantity - general_food.total_quantity
+      difference.negative? ? 0 : difference
+    else
+      general_food.total_quantity
+    end
+  end
+
+  def calculate_total_price(general_food, difference_quantity)
+    if difference_quantity.zero?
+      0
+    else
+      (general_food.total_price / general_food.total_quantity) * difference_quantity
+    end
+  end
+
+  def recipe_params
+    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public)
+  end
+
+  def set_recipe
+    @recipe = Recipe.find(params[:id])
+  end
+
+  def authorize_user
+    return if @recipe.user == current_user
+
+    redirect_to root_path, alert: 'You are not authorized to perform this action.'
   end
 end
