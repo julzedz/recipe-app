@@ -13,6 +13,7 @@ class FoodsController < ApplicationController
 
   def create
     @food = Food.new(food_params)
+    @food.user_id = current_user.id
 
     if @food.save
       flash[:notice] = ' Food was successfully created'
