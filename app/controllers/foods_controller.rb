@@ -1,18 +1,26 @@
 class FoodsController < ApplicationController
   def index
-    # Your logic to fetch and display all users
+    @foods = Food.all
   end
 
   def show
-    # Your logic to fetch and display a single user
+    # Your logic to fetch and display a single food item
   end
 
   def new
-    # Your logic to set up a new user form
+    @food = Food.new
   end
 
   def create
-    # Your logic to create a new user based on submitted form data
+    @food = Food.new(food_params)
+    @food.user_id = current_user.id
+
+    if @food.save
+      flash[:notice] = ' Food was successfully created'
+      redirect_to foods_path
+    else
+      render :new
+    end
   end
 
   def edit
@@ -25,5 +33,16 @@ class FoodsController < ApplicationController
 
   def destroy
     # Your logic to delete a user
+    @food = Food.find(params[:id])
+    puts params[:id]
+    @food.destroy
+    flash[:notice] = ' Food was successfully deleted'
+    redirect_to foods_path
+  end
+
+  private
+
+  def food_params
+    params.require(:food).permit(:name, :measurement_unit, :price, :quantity)
   end
 end
