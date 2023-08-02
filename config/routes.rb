@@ -8,10 +8,3 @@ Rails.application.routes.draw do
   resources :public_recipes, only: [:index]
   resources :shopping_lists, only: [:index]
 end
-
-
-
-
-Rails.application.routes.draw do
-  
-end

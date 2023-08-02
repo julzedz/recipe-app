@@ -36,14 +36,40 @@ class RecipesController < ApplicationController
              end
   end
 
-  def edit
-  end
+  def edit; end
 
   def destroy
     @recipe = Recipe.find(params[:id])
     @recipe.destroy
     flash[:notice] = 'Recipe was successfully deleted.'
     redirect_to recipes_path
+  end
+
+  class FoodSummary
+    attr_accessor :name, :total_quantity, :total_price
+
+    def initialize(name, total_quantity, total_price)
+      @name = name
+      @total_quantity = total_quantity
+      @total_price = total_price
+    end
+  end
+
+  def missing_food
+    @user = current_user
+    @general_food_list = @user.foods
+      .group(:name)
+      .select('foods.name,
+                                     SUM(foods.quantity) as total_quantity,
+                                     SUM(foods.price * foods.quantity) as total_price')
+
+    @food_used_in_recipes = @user.foods
+      .joins(:recipe_foods)
+      .group(:name)
+      .select('foods.name,
+                                          SUM(recipe_foods.quantity) as total_quantity')
+
+    @missing_food = build_missing_food_list
   end
 
   private
