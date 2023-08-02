@@ -33,6 +33,7 @@ class FoodsController < ApplicationController
   def destroy
     # Your logic to delete a user
     @food = Food.find(params[:id])
+    puts params[:id]
     @food.destroy
     flash[:notice] = ' Food was successfully deleted'
     redirect_to foods_path
