@@ -209,3 +209,12 @@ main {
     margin-bottom: 10px;
   }
 }
+
+.navbar-nav {
+  display: flex;
+  gap: 2rem;
+
+  li {
+    padding: 1rem;
+  }
+}
