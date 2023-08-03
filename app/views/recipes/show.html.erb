@@ -22,6 +22,11 @@
 <%= button_to "generate shopping list", new_recipe_path, method: :get %>
 <%= render "shared/button" %>
 </div>
+<br>
+<div>
+<%= button_to "Add New ingredients", new_recipe_path, method: :get %>
+</div>
+
 <% if @foods.any? %>
   <table>
     <thead>
