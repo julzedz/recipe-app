@@ -1,4 +1,4 @@
-<h3>Recipe Page</h3>
+<h3>All Recipes</h3>
 
 <p>
 <%= button_to "Add New Recipe", new_recipe_path, method: :get %>
@@ -13,7 +13,7 @@
     <div class="recipe-description">
       <%= recipe.description %>
     </div>
-      <%= button_to "Delete", recipe_path(recipe), method: :delete, class: "btn"  %>
+      <%= button_to "Delete", recipe_path(recipe), method: :delete %>
     </li>
     <br>
   <% end %>
