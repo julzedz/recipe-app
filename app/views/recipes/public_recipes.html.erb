@@ -1,11 +1,11 @@
-<p>Public Recipes </p>
+<h3>Public Recipes </h3>
 
 <ul>
   <% @recipes.each do |recipe| %>
     <% if recipe.public %>
       <li>
         <div class="recipe-name">
-          <%= link_to recipe.name, recipe_path(recipe) %>
+          <h4><%= link_to recipe.name, recipe_path(recipe) %></h4>
         </div>
         <div class="recipe-description">
           <%= recipe.description %>
@@ -20,6 +20,7 @@
           By: <%= recipe.user.name %>
         </div>
       </li>
+      <br>
     <% end %>
   <% end %>
 </ul>
