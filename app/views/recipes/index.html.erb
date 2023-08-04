@@ -13,7 +13,7 @@
     <div class="recipe-description">
       <%= recipe.description %>
     </div>
-      <%= button_to "Delete", recipe_path(recipe), method: :delete %>
+      <%= button_to "Delete", recipe_path(recipe), class:"btn btn-danger", method: :delete %>
     </li>
     <br>
   <% end %>
