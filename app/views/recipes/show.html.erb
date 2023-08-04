@@ -25,7 +25,7 @@
     <% if flash[:notice] %>
       <p class="notice"><%= flash[:notice] %></p>
     <% end %>
-    <div class="row row-cols-2">
+    <div class="row row-cols-3">
       <div>
         <%= button_to "Generate Shopping List", new_recipe_path, method: :get, class: "btn btn-success" %>
         <%= render "shared/button" %>
