@@ -9,9 +9,9 @@
 <% end %>
 
 <% if @foods.any? %>
-  <table>
+  <table class="table table-info table-hover">
     <thead>
-      <tr>
+      <tr class="table-active">
         <th>Food Name</th>
         <th>Measurement Unit</th>
         <th>Unit Price</th>
@@ -19,9 +19,9 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="table table-info table-hover">
       <% @foods.each do |food| %>
-        <tr>
+        <tr class="table-active">
           <td><%= food.name %></td>
           <td><%= food.measurement_unit %></td>
           <td><%= number_to_currency(food.price) %></td>

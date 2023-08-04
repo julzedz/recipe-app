@@ -11,14 +11,14 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_importmap_tags %>
   </head>
-
+ <br/><br/>
   <body>
     <header  id="containerfluid1">
     <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
     <h4><%= link_to 'Recipe App', recipes_path %> </h4>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold" id="menuba">
         <li class="nav-item">
           <%= link_to 'Foods', foods_path %>
         </li>
@@ -31,6 +31,13 @@
         <li class="nav-item">
           <%= link_to 'Shopping Lists', shopping_lists_path %>
         </li>
+       <li id="sign-out">
+        <% if user_signed_in? %>
+          <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+      </li>
+       <% else %>
+        <li><%= link_to 'Sign in', new_user_session_path, class: 'signin_btn btn-basic' %></li>
+      <% end %>
       </ul>
     </div>
   </div>
@@ -44,14 +51,6 @@
       <% if alert %>
         <p class="alert alert-danger"><%= alert %></p>
       <% end %>
-
-      <div id="sign-out">
-        <% if user_signed_in? %>
-          <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
-        <% end %>
-        <br/>
-      </div>
-
       <%= yield %>
     </main>
 
