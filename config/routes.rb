@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   end
   resources :foods
   resources :recipes
-  resources :recipe_foods, only: [:new, :create, :index]
+  resources :recipe_foods, only: [:new, :create, :index, :edit]
   resources :shopping_lists, only: %i[index]
 
   patch '/recipe_foods/:id', to: 'recipe_foods#update', as: :update_recipe_food
