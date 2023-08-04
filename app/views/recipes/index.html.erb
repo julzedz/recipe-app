@@ -4,16 +4,16 @@
 <%= button_to "Add New Recipe", new_recipe_path, method: :get %>
 </p>
 
-<ul>
+<ul class="list-group">
   <% @recipes.each do |recipe| %>
-    <li>
+    <li class="list-group-item list-group-item list-group-item-action list-group-item-info">
     <div class="recipe-name">
       <%= link_to recipe.name, recipe_path(recipe) %>
     </div>
     <div class="recipe-description">
       <%= recipe.description %>
     </div>
-      <%= button_to "Delete", recipe_path(recipe), class:"btn btn-danger", method: :delete %>
+      <%= button_to "Delete", recipe_path(recipe), class:"btn btn-list-group-item list-group-item-danger", method: :delete %>
     </li>
     <br>
   <% end %>
