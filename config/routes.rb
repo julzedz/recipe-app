@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :foods
   resources :recipes
   resources :recipe_foods, only: [:new, :create, :index]
-  resources :shopping_lists, only: [:index]
+  resources :shopping_lists, only: %i[index]
 
   patch '/recipe_foods/:id', to: 'recipe_foods#update', as: :update_recipe_food
   delete '/recipe_foods/:id', to: 'recipe_foods#destroy', as: :destroy_recipe_food
