@@ -4,11 +4,15 @@ class RecipesController < ApplicationController
   before_action :authorize_user, only: %i[edit update destroy]
 
   def index
-    @recipes = Recipe.all
+    @recipes = if current_user
+                 Recipe.where(user_id: current_user.id).includes(:user)
+               else
+                 []
+               end
   end
 
   def public_recipes
-    @recipes = Recipe.where(public: true)
+    @recipes = Recipe.includes(:user, recipe_foods: %i[food]).where(public: true).order(created_at: :desc)
   end
 
   def new
@@ -28,23 +32,15 @@ class RecipesController < ApplicationController
   end
 
   def show
-    begin
-      @recipe = Recipe.find(params[:id])
-      @foods = if current_user && current_user.id == @recipe.user_id
-                 RecipeFood.where(recipe_id: @recipe.id).includes(:recipe, :food)
-               else
-                 RecipeFood.where(recipe_id: @recipe.id).includes(:food)
-               end
-    rescue ActiveRecord::RecordNotFound
-      # Handle the case when the recipe with the given id is not found.
-      # You can redirect to an error page or render a 404 page.
-      redirect_to root_path, alert: 'Recipe not found.'
-    end
+    @recipe = Recipe.find(params[:id])
+    @foods = if current_user.id == @recipe.user.id
+               RecipeFood.where(recipe_id: @recipe.id).includes(:recipe, :food)
+             else
+               RecipeFood.where(recipe_id: @recipe.id).includes(:food)
+             end
   end
 
-  def edit
-    @recipe = Recipe.find(params[:id])
-  end
+  def edit; end
 
   def destroy
     @recipe = Recipe.find(params[:id])
@@ -53,7 +49,13 @@ class RecipesController < ApplicationController
     redirect_to recipes_path
   end
 
-  # ... (rest of the actions)
+  def update
+    if @recipe.update(recipe_params)
+      redirect_to recipe_url(@recipe), notice: 'Recipe was successfully updated.'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
   private
 

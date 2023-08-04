@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   resources :recipe_foods, only: [:new, :create, :index]
   resources :shopping_lists, only: [:index]
 
+  patch '/recipe_foods/:id', to: 'recipe_foods#update', as: :update_recipe_food
+  delete '/recipe_foods/:id', to: 'recipe_foods#destroy', as: :destroy_recipe_food
+
+
   # Defines the root path route ("/")
   # root "articles#index"
 end
