@@ -22,11 +22,13 @@
     <% form.label :description %>
     <%= form.text_area :description, class:"form-control", placeholder:"description" %>
   </div>
-
-  <div>
-    <%= form.label :public %><br/>
-    <%= form.check_box :public %>
-  </div>
+  <br/>
+  <div class="form-check form-switch">
+    <%= form.check_box :public, class: "form-check-input bg-success", id: "flexSwitchCheckChecked" %>
+    <%= form.label :public, class: "form-check-label", for: "flexSwitchCheckChecked" do %>
+      Public
+    <% end %>
+</div>
 
   <div>
     <%= form.submit %>
