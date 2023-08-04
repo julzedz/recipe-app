@@ -1,9 +1,9 @@
 <h3>Public Recipes </h3>
 
-<ul>
+<ul class="list-group">
   <% @recipes.each do |recipe| %>
     <% if recipe.public %>
-      <li>
+      <li class="list-group-item list-group-item list-group-item-action list-group-item-info">
         <div class="recipe-name">
           <h4><%= link_to recipe.name, recipe_path(recipe) %></h4>
         </div>

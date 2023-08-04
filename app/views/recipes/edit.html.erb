@@ -5,7 +5,19 @@
   <%= form.label :name %>
   <%= form.text_field :name %>
 
-  <!-- Add more fields for other attributes of the recipe -->
+  <%# Loop through associated RecipeFoods to display Food names %>
+  <% @recipe.recipe_foods.each do |recipe_food| %>
+    <div class="field">
+      <%= form.label "food_name_#{recipe_food.id}".to_sym %><br>
+      <% if recipe_food.food.present? %>
+        <%= form.text_field "food_name_#{recipe_food.id}".to_sym, value: recipe_food.food.name, readonly: true %>
+      <% else %>
+        <!-- Display a default value or handle the situation when there's no associated Food -->
+        <!-- For example: -->
+        <%= form.text_field "food_name_#{recipe_food.id}".to_sym, value: "Food Not Found", readonly: true %>
+      <% end %>
+    </div>
+  <% end %>
 
   <%= form.submit "Update Recipe" %>
 <% end %>
