@@ -19,9 +19,9 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="table table-info table-hover">
       <% @foods.each do |food| %>
-        <tr>
+        <tr class="table-active">
           <td><%= food.name %></td>
           <td><%= food.measurement_unit %></td>
           <td><%= number_to_currency(food.price) %></td>

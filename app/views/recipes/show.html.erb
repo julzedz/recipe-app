@@ -17,14 +17,28 @@
   <p class="notice"><%= flash[:notice] %></p>
 <% end %>
 
+<div class="row row-cols-2">
 <div>
-  <%= button_to "Generate Shopping List", new_recipe_path, method: :get, class: "btn btn-secondary" %>
+  <%= button_to "Generate Shopping List", new_recipe_path, method: :get, class: "btn btn-success" %>
   <%= render "shared/button" %>
 </div>
 <br/>
 <div>
-  <%= button_to "Add New Ingredients", new_recipe_path, method: :get, class: "btn btn-secondary" %>
+  <%= button_to "Add New Ingredients", new_recipe_path, method: :get, class: "btn btn-success" %>
 </div>
+
+<%= form_with(model: @recipe, url: recipe_path(@recipe), method: :patch) do |form| %>
+<br/>
+  <div class="form-check form-switch">
+  <%= form.check_box :public, class: "form-check-input bg-success", id: "flexSwitchCheckChecked" %>
+  <%= form.label :public, class: "form-check-label", for: "flexSwitchCheckChecked" do %>
+    Public
+  <% end %>
+</div>
+
+
+</div>
+
 <br/>
 <% if @foods.any? %>
   <table class="table table-info table-hover">
@@ -47,8 +61,8 @@
           <% else %>
             <td>N/A</td>
           <% end %>
-          <td>
-            <%= button_to "Modify", food_path(food), method: :get, class: "btn btn-light" %> <br/>
+          <td class="row row-cols-2">
+            <%= button_to "Modify", food_path(food), method: :get, class: "btn btn-primary" %> <br/>
             <%= button_to "Delete", food_path(food), method: :delete, class: "btn btn-danger" %>
           </td>
         </tr>
@@ -59,16 +73,11 @@
   <p>No food available.</p>
 <% end %>
 <br/>
+
+<div class="row row-cols-6">
 <%= link_to "Edit Recipe", edit_recipe_path(@recipe), class: "btn btn-secondary" %>
 
-<%= form_with(model: @recipe, url: recipe_path(@recipe), method: :patch) do |form| %>
-<br/>
-  <div class="form-check form-switch">
-  <%= form.check_box :public, class: "form-check-input bg-success", id: "flexSwitchCheckChecked" %>
-  <%= form.label :public, class: "form-check-label", for: "flexSwitchCheckChecked" do %>
-    Public
-  <% end %>
-</div>
+
 
   <div>
     <%= form.submit "Update Public", class: "btn btn-secondary" %>
@@ -76,3 +85,4 @@
 <% end %>
 <br/>
 <%= link_to "Back to All Recipes", recipes_path, class: "btn btn-secondary" %>
+</div>
