@@ -19,18 +19,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_204600) do
     t.string "measurement_unit"
     t.float "price"
     t.integer "quantity"
-    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_foods_on_user_id"
   end
 
   create_table "recipe_foods", force: :cascade do |t|
     t.integer "quantity"
-    t.bigint "food_id"
-    t.bigint "recipe_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "food_id"
+    t.bigint "recipe_id"
     t.index ["food_id"], name: "index_recipe_foods_on_food_id"
     t.index ["recipe_id"], name: "index_recipe_foods_on_recipe_id"
   end
@@ -41,9 +41,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_204600) do
     t.float "cooking_time"
     t.text "description"
     t.boolean "public"
-    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
@@ -61,7 +61,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_204600) do
   end
 
   add_foreign_key "foods", "users"
-  add_foreign_key "recipe_foods", "foods"
-  add_foreign_key "recipe_foods", "recipes"
-  add_foreign_key "recipes", "users"
 end
