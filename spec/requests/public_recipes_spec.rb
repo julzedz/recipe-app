@@ -11,7 +11,6 @@ RSpec.describe 'PublicRecipes', type: :request do
       login_as(@user, scope: :user)
 
       get '/public_recipes'
-      follow_redirect!
       expect(response).to have_http_status(:success)
     end
   end

@@ -28,7 +28,7 @@ RSpec.describe 'recipes/index.html.erb', type: :view do
     end
 
     scenario 'check if recipes are available' do
-      expect(rendered).to have_content 'burger'
+      expect(rendered).to have_content 'Julian'
       expect(rendered).to have_content 'tea'
       expect(rendered).to have_content 'pizza'
     end

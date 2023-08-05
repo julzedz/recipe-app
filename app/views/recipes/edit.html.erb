@@ -1,23 +1,35 @@
-<!-- app/views/recipes/edit.html.erb -->
-<h1>Edit Recipe</h1>
+<h2 class="heading">All Recipes...</h2>
+<p>
+  <% if user_signed_in? %>
+    <%= button_to "Add New Recipe", new_recipe_path, method: :get, class:"add_btn" %>
+  <% else %>
+    <h3>Sign in to view and create your recipes</h3>
+  <% end %>
+</p>
 
-<%= form_with(model: @recipe, url: recipe_path(@recipe), method: :patch) do |form| %>
-  <%= form.label :name %>
-  <%= form.text_field :name %>
-
-  <%# Loop through associated RecipeFoods to display Food names %>
-  <% @recipe.recipe_foods.each do |recipe_food| %>
-    <div class="field">
-      <%= form.label "food_name_#{recipe_food.id}".to_sym %><br>
-      <% if recipe_food.food.present? %>
-        <%= form.text_field "food_name_#{recipe_food.id}".to_sym, value: recipe_food.food.name, readonly: true %>
-      <% else %>
-        <!-- Display a default value or handle the situation when there's no associated Food -->
-        <!-- For example: -->
-        <%= form.text_field "food_name_#{recipe_food.id}".to_sym, value: "Food Not Found", readonly: true %>
-      <% end %>
+<% if @recipes.any? %> 
+  <ul class="recipe_list">
+    <% @recipes.each do |recipe| %>
+      <li class="recipe_container">
+        <div class="recipe_name">
+          <%= link_to recipe.name, recipe_path(recipe) %>
+          <span>
+            <% if user_signed_in? %>
+              <%= button_to "Remove", recipe_path(recipe), method: :delete, class: "btn"  %>
+            <% end %>
+          </span>
+        </div>
+        <div class="recipe_description">
+          <%= recipe.description %>
+        </div>
+      </li>
+    <% end %>
+  </ul> 
+<% else %>
+  <% if user_signed_in? %>
+    <div>
+      <h3>😢You don't have any recipes saved. Create a recipe to see it here😪</h3>
     </div>
   <% end %>
-
-  <%= form.submit "Update Recipe" %>
 <% end %>
+ 
