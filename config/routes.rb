@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   devise_for :users
   root to: "recipes#index"
-  get '/recipes/missing_food', to: 'recipes#missing_food', as: 'missing_food'
   get '/public_recipes' => 'recipes#public_recipes'
   resources :users do
     get :general_food_list, on: :member
