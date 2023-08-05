@@ -1,5 +1,6 @@
 <h3>Public Recipes </h3>
 
+<% if @recipes.any? %>
 <ul class="list-group">
   <% @recipes.each do |recipe| %>
     <% if recipe.public %>
@@ -24,4 +25,6 @@
     <% end %>
   <% end %>
 </ul>
-
+<% else %>
+<p>Sorry, no public recipes are available.</p>
+<% end %>

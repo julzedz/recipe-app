@@ -3,7 +3,7 @@
 <%= form_with(model: @recipe, url: recipe_path(@recipe), method: :patch) do |form| %>
   <br/>
   <!-- Toggle button for Public column -->
-  <% if can? :update, @recipe %>
+  <% if current_user && current_user.id == @recipe.user.id %>
     <%= form_with(model: @recipe) do |form| %>
       <div class="form-check form-switch">
         <%= form.check_box :public, class: "form-check-input bg-success", id: "flexSwitchCheckChecked" %>
@@ -27,12 +27,16 @@
     <% end %>
     <div class="row row-cols-3">
       <div>
-        <%= button_to "Generate Shopping List", new_recipe_path, method: :get, class: "btn btn-success" %>
-        <%= render "shared/button" %>
+        <%= button_to "Generate Shopping List", shopping_lists_path, method: :get, class: "btn btn-success" %>
       </div>
       <br/>
       <div>
-        <%= button_to "Add New Ingredients", new_recipe_path, method: :get, class: "btn btn-success" %>
+        <% if current_user && current_user.id == @recipe.user.id %>
+          <%= form_tag(new_recipe_food_path, method: :get) do %>
+            <%= hidden_field_tag :recipe_id, @recipe.id %>
+            <%= submit_tag "Add ingredient", class:"add_btn btn btn-success" %>
+          <% end %>
+        <% end %>
       </div>
     </div>
     <br/>
@@ -43,7 +47,9 @@
             <th>Food Name</th>
             <th>Quantity</th>
             <th>Value</th>
+            <% if current_user && current_user.id == @recipe.user.id %>
             <th>Action</th>
+            <% end %>
           </tr>
         </thead>
         <tbody>
@@ -57,10 +63,12 @@
               <% else %>
                 <td>N/A</td>
               <% end %>
+              <% if current_user && current_user.id == @recipe.user.id %>
               <td class="row row-cols-4">
-                <%= button_to "Modify", food_path(food), method: :get, class: "btn btn-primary" %> <br/>
-                <%= button_to "Delete", food_path(food), method: :delete, class: "btn btn-danger" %>
+                <%= button_to "Modify", edit_recipe_food_path(food), method: :get, class: "btn btn-primary" %> <br/>
+                <%= button_to "Delete", destroy_recipe_food_path(food), method: :delete, class: "btn btn-danger" %>
               </td>
+              <% end %>
             </tr>
           <% end %>
         </tbody>
@@ -68,12 +76,6 @@
     <% else %>
       <p>No food available.</p>
     <% end %>
-    <br/>
-    <div class="row row-cols-4">
-      <div>
-        <%= form.submit "Update Public", class: "btn btn-secondary" %>
-      </div>
-    </div>
     <br/>
   <% end %>
   <%= link_to "Back to All Recipes", recipes_path, class: "btn btn-secondary" %>
